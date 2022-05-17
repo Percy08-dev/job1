@@ -1,12 +1,10 @@
 import sys
 import os
-tmppath = os.path.normpath(os.path.join(os.path.dirname(__file__), "./lib"))        # 下位ディレクトリのファイルの追加
+tmppath = os.path.normpath(os.path.join(os.path.dirname(__file__), "../src/lib"))        # 下位ディレクトリのファイルの追加
 sys.path.append(tmppath)
-from lib import object
+from lib.object import Feald, INF
 from lib.move import Move
-import turtle
 
-import time
 
 
 def main():
@@ -16,7 +14,7 @@ def main():
     options = {
         # 移動アルゴリズム
         "Feeds_algo" : Move.stay, 
-        "Turtle_algo" : Move.HaveEye, 
+        "Turtle_algo" : Move.HaveNose, 
 
         # 距離関係
         "DistanceFunction" : "Manhattan",          # Euclidean or Manhattan
@@ -31,20 +29,11 @@ def main():
         "Grid" : True, 
 
         # 行動回数
-        "loop" : 1000, 
+        "max-loop" : 10,      # 整数 or INF
     }
-
-    x = object.Feald(feeds=feed, turtles=kame, options=options)
-    print([i.shape() for i in x.scr.turtles()])
-
-    t1 = time.perf_counter()
-    for i in range(options["loop"]):
-        x.play()
     
-    t2 = time.perf_counter()
-
-    print(t2 - t1)
-    # time.sleep(10)
+    x = Feald(feeds=feed, turtles=kame, options=options)
+    x.start()
 
 
 

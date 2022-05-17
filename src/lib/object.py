@@ -4,6 +4,7 @@ import random
 import time
 from typing import List
 import tkinter as tk
+from operator import add
 
 from move import Move
 
@@ -12,6 +13,15 @@ RIGHT = 0
 UP = 1
 LEFT = 2
 DOWN = 3
+
+MOVE = {
+    RIGHT : (1, 0), 
+    UP : (0, 1), 
+    LEFT : (-1, 0), 
+    DOWN : (0, -1),
+}
+
+INF = float("inf")
 
 # Optionsの引数用
 FEEDS_ALGO = "Feeds_algo"
@@ -122,7 +132,7 @@ class Feald(Law):
         V = turtle.Turtle()         # 垂直方向
         H = turtle.Turtle()         # 水平方向
 
-        V.hideturtle()              # コンフィグ
+        V.hideturtle()              # コンフィグ. 亀を非表示. 
         H.hideturtle()
         V.speed(0)
         H.speed(0)
@@ -157,7 +167,7 @@ class Feald(Law):
         H.setpos(-1, -1)
 
 
-    def init_colors(self):
+    def init_colors(self):          # turtleで使用する色のリストを作成
         global colors
         colors = [
             "cadetblue", 
@@ -171,11 +181,19 @@ class Feald(Law):
         ]
 
 
+    def start(self):
+        op = self.Options
+        while op["max-loop"] > 0 and self.end_check():
+            self.play()
+            op["max-loop"] -= 1
+
+
 
     def play(self):             # 1ターン進める
-        # self.scr.title("Turn : {}".format(self.turn))
         for i in self.Turtles:
             i.run(algo=self.TurtlesAlgo, option=self.Options)
+
+        self.eat_check()                # 餌を食べたか確認
         
         turtle.update()                 # 画面の更新
         time.sleep(self.delay)
@@ -184,11 +202,20 @@ class Feald(Law):
 
 
     def eat_check(self):        # 餌と亀が重なっているかを確認
-        pass
+        t = [i for i in turtle.turtles() if i.shape() == "turtle"]                  # 亀のリスト
+        f = [i for i in turtle.turtles() if i.shape() == "circle"]                  # 餌のリスト
+
+        for kame in t:
+            for esa in f:
+                if kame.pos() == esa.pos():             # 亀と重複した座標を持つ餌を確認
+                    esa.hideturtle()                    # 餌を非表示にする
 
 
-    def end_check(self):        # 餌が残っているか確認
-        pass
+
+    def end_check(self)->bool:        # 餌が残っているか確認
+        f = [i for i in turtle.turtles() if i.shape() == "circle" and i.isvisible()]
+        return bool(f)
+
 
 
 
@@ -220,7 +247,8 @@ class Feed(Law):
         self.Feed.pendown()
         self.Feed.showturtle()
 
-        if op["Turtle_algo"] == Move.HaveEye:
+
+        if op["Turtle_algo"].__name__ == "HaveNose":
             tmp = turtle.Turtle()
             tmp.color("Red")
             tmp.hideturtle()
@@ -231,6 +259,10 @@ class Feed(Law):
                 tmp.circle(radius=op["sight"])
             elif op["DistanceFunction"] == "Manhattan":
                 tmp.circle(radius=op["sight"], steps=4)
+            else:
+                print("Undefined distance function", file=sys.stderr)
+                sys.exit()
+            
             tmp.penup()
 
 
@@ -271,7 +303,7 @@ class Turtle(Law):
         if len(colors) > 0:
             return colors.pop()
         else:
-            return (random.random(), random.random(), random.random())
+            return (random.random(), random.random(), random.random())      # RGB [0~1)
 
 
 
@@ -280,17 +312,19 @@ class Turtle(Law):
         x = [(True, 1), (False, 1), (True, -1), (False, -1)]        # True->水平, False->垂直
         flag = False
         # 壁のチェック
-        while not flag:
-            direction = algo(T=self.T, option=option)
+        while not flag:                                             # 壁のない方向が出るまで繰り返す
+            direction = algo(T=self.T, option=option)               
             if x[direction][0]:
                 flag = Law.x_lim[0] <= self.T.xcor() + x[direction][1] <= Law.x_lim[1]
             else:
                 flag = Law.y_lim[0] <= self.T.ycor() + x[direction][1] <= Law.y_lim[1]
 
 
-        self.T.setheading(direction * 90)   # 頭の方向を決めて前進
-        self.T.forward(1)                  
+        # self.T.setheading(direction * 90)   # 頭の方向を決めて前進 -> 誤差の原因
+        # self.T.forward(1)                  
         # print("座標:{}, 角度:{}".format(self.T.pos(), self.T.heading()))
+        next_pos = tuple(map(add, self.T.pos(), MOVE[direction]))       # 移動先の座標を計算
+        self.T.setpos(next_pos)                                         # 指定座標へ移動
 
 
 

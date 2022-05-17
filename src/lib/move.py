@@ -10,7 +10,7 @@ class Move:
     def RandomWalk(T, option):
         return random.randint(0, 3) 
 
-    def HaveEye(T:turtle, option):          # 一定距離内に来た際に目標に直進する.
+    def HaveNose(T:turtle, option):          # 一定距離内に来た際に目標に直進する.
         sight = option["sight"]
         r = -1
         if option["DistanceFunction"] == "Euclidean":
@@ -22,10 +22,10 @@ class Move:
             # print("p1:({:.60f}, {:.60f})".format(T.pos()[0], T.pos()[1]))         # タートルグラフィックスの内部は単精度とか？
             p1 = [round(i, 0) for i in T.pos()]     # 偶数丸めだけど、浮動小数点数誤差の修正なら問題ない
             p2 = [round(i, 0) for i in F.pos()]
-            print("({:.20f}, {:.20f})".format(T.pos()[0], T.pos()[1]), "->", p1)
+            # print("({:.20f}, {:.20f})".format(T.pos()[0], T.pos()[1]), "->", p1)
             d = df(p1=p1, p2=p2)
             if d <= sight:
-                tmp = tuple(map(sub, p2, p1))            # (50.00,49.00) (50.00,50.00) -> ( -7.105427357601002e-15 0.999999999999936 ) 何故？ -> int型にキャストして対応. binding?
+                tmp = tuple(map(sub, p2, p1))            # (50.00,49.00) (50.00,50.00) -> ( -7.105427357601002e-15 0.999999999999936 ) ベクトル演算の誤差 -> 移動方法の変更で対応
                 if tmp[0] < 0:
                     r = 2
                     break

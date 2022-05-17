@@ -10,7 +10,7 @@ slow ->
 
 issue
     add(item, priority)
-    - save img          0
+    - save img          0 -> outputlog
     - scaling images    0
     - step execution    1
     - stop              1

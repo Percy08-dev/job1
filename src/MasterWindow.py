@@ -1,11 +1,15 @@
-from json.tool import main
 from tkinter import *
+from tkinter.tix import IMAGE
 import turtle
 import glob
 import os
 import pathlib
 import sys
-from unittest import result
+from tkinter import Canvas
+
+tmppath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../UserFile"))        # 下位ディレクトリのファイルの追加
+sys.path.append(tmppath)
+
 
 from lib.normalize_path import AbsPath
 
@@ -79,7 +83,7 @@ class MasterWindow(object):
 
         # ファイルリスト
 
-        file_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./*.py"))
+        file_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../UserFile/*.py"))
         for path in glob.glob(file_path):
             if os.path.basename(path) == os.path.basename(__file__):
                 continue
@@ -90,9 +94,9 @@ class MasterWindow(object):
 
         # 他
         menu.add_separator()
-        menu.add_command(label="Save PNG", command=self.__png, font=menufont)
-        menu.add_separator()
-        menu.add_command(label="Exit", command=quit, font=menufont)
+        # menu.add_command(label="Save PNG", command=self.__png, font=menufont)
+        # menu.add_separator()
+        menu.add_command(label="Exit", command=self.main_window.quit, font=menufont)
 
         return menu
 
@@ -101,12 +105,21 @@ class MasterWindow(object):
         self.clearCanvas()
         turtle.TurtleScreen._RUNNING = False
         mod_name = pathlib.Path(path).stem
+        # mod_name = "UserFile." + mod_name
         __import__(mod_name)
         self.module = sys.modules[mod_name]
         self.state = READY
 
     
     def __png(self):        # タートルグラフィックスの画面をpng形式で保存
+        """
+        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./test.eps"))
+        cv = turtle.getcanvas()                     # Canvasを受け取る
+        ps = cv.postscript(colormode="color")       # Canvasからpostscriptを生成
+        mem = StringIO(ps)                          # インメモリ(メモリ上にファイルを置く)
+        img = Image.open(mem)                       # メモリ上のファイルを開く
+        # goast script以外でpostscriptを描写する方法がなさそうで頓挫
+        """
         pass
 
 
@@ -212,7 +225,7 @@ class MasterWindow(object):
 
 def test():
     demo = MasterWindow()
-    demo.main_window,mainloop()
+    demo.main_window.mainloop()
 
 if __name__ == "__main__":
     test()
