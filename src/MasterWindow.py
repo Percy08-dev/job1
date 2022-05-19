@@ -44,7 +44,7 @@ class MasterWindow(object):
 
         self.MenuBar = Menu(main_window, relief=RAISED, borderwidth=2)
         self.MenuBar.add_cascade(label="File", menu=self.__makeFileMenu(self.MenuBar), underline=0)                      # メニューバーの項目を作る
-        self.MenuBar.add_cascade(label="scale", menu=self.__makeScale(self.MenuBar), underline=0)
+        # self.MenuBar.add_cascade(label="scale", menu=self.__makeScale(self.MenuBar), underline=0)                         # 内部未実装
 
         main_window["menu"] = self.MenuBar
 

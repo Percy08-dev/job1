@@ -190,6 +190,10 @@ class Feald(Law):
 
 
     def play(self):             # 1ターン進める
+        for i in self.Feeds:
+            i.run(algo=self.FeedsAlgo, option=self.Options)
+            i.draw_border()
+
         for i in self.Turtles:
             i.run(algo=self.TurtlesAlgo, option=self.Options)
 
@@ -237,8 +241,11 @@ class Feed(Law):
             print("ERROR: invalid y position", file=sys.stderr)
             sys.exit(1)
 
-        # 餌の描写
-        self.Feed = turtle.Turtle()
+        self.Feed = turtle.Turtle()         # 餌の本体
+        self.circler = turtle.Turtle()      # 円を描くオブジェクト
+        self.Options = op
+
+        # 餌の初期化
         self.Feed.shape("circle")
         self.Feed.color("Red")
         self.Feed.hideturtle()
@@ -247,7 +254,23 @@ class Feed(Law):
         self.Feed.pendown()
         self.Feed.showturtle()
 
+        # 円を描くオブジェクトの初期化
+        self.circler.color("Red")
+        self.circler.hideturtle()
 
+        # 初回の描写
+        self.circler.penup()
+        self.circler.setpos(x, y-op["sight"])
+        self.circler.pendown()
+        if op["DistanceFunction"] == "Euclidean":
+            self.circler.circle(radius=op["sight"])
+        elif op["DistanceFunction"] == "Manhattan":
+            self.circler.circle(radius=op["sight"], steps=4)
+        else:
+            print("Undefined distance function", file=sys.stderr)
+            sys.exit()
+
+        """
         if op["Turtle_algo"].__name__ == "HaveNose":
             tmp = turtle.Turtle()
             tmp.color("Red")
@@ -264,6 +287,47 @@ class Feed(Law):
                 sys.exit()
             
             tmp.penup()
+        """
+
+
+    def draw_border(self):
+        op = self.Options
+        x, y = self.Feed.pos()
+        self.circler.clear()
+
+        if self.Options["Turtle_algo"].__name__ == "HaveNose":
+            self.circler.penup()
+            self.circler.setpos(x, y-op["sight"])
+            self.circler.pendown()
+            if op["DistanceFunction"] == "Euclidean":
+                self.circler.circle(radius=op["sight"])
+            elif op["DistanceFunction"] == "Manhattan":
+                self.circler.circle(radius=op["sight"], steps=4)
+            else:
+                print("Undefined distance function", file=sys.stderr)
+                sys.exit()
+
+
+    def run(self, algo:Move, option):
+        if algo.__name__ == "stay":     # stayの対応
+            return
+
+        x = [(True, 1), (False, 1), (True, -1), (False, -1)]        # True->水平, False->垂直
+        flag = False
+        # 壁のチェック
+        while not flag:                                             # 壁のない方向が出るまで繰り返す
+            direction = algo(T=self.Feed, option=option)               
+            if x[direction][0]:
+                flag = Law.x_lim[0] <= self.Feed.xcor() + x[direction][1] <= Law.x_lim[1]
+            else:
+                flag = Law.y_lim[0] <= self.Feed.ycor() + x[direction][1] <= Law.y_lim[1]
+
+
+        # self.T.setheading(direction * 90)   # 頭の方向を決めて前進 -> 誤差の原因
+        # self.T.forward(1)                  
+        # print("座標:{}, 角度:{}".format(self.T.pos(), self.T.heading()))
+        next_pos = tuple(map(add, self.Feed.pos(), MOVE[direction]))       # 移動先の座標を計算
+        self.Feed.setpos(next_pos)                                         # 指定座標へ移動
 
 
 
@@ -309,6 +373,9 @@ class Turtle(Law):
 
 
     def run(self, algo:Move, option):
+        if algo.__name__ == "stay":     # stayの対応
+            return
+
         x = [(True, 1), (False, 1), (True, -1), (False, -1)]        # True->水平, False->垂直
         flag = False
         # 壁のチェック
