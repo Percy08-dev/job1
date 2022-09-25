@@ -1,21 +1,2 @@
-ランダムウォーク
-Fastest -> 1000回あたり11秒
-Fast -> 1000回あたり31秒
-normal -> 1000回あたり62秒
-slow -> 
-
-クリック実行と実行中一時停止が欲しい？
-
-1画面の範囲を(0, 0) -> (100, 100)の正方形で固定
-
-issue
-    add(item, priority)
-    - save img          0 -> outputlog
-    - scaling images    0
-    - step execution    1
-    - stop              1
-
-    fix
-    - forwoard make Floating point error -> use setpos
-    - 終了後の画面の待機
-
+・匂いに勾配をつける.
+・餌側が亀を認識して逃げる

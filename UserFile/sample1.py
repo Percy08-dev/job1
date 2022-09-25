@@ -12,6 +12,13 @@ def main():
     kame = [(10, 10), (90, 90), (0, 10), (60 ,60)]
 
     options = {
+        # 範囲設定
+        "x_lim" : 100, 
+        "y_lim" : 100, 
+
+        # grid分割数
+        "sep" : 21, 
+
         # 移動アルゴリズム
         "Feeds_algo" : Move.stay, 
         "Turtle_algo" : Move.HaveNose, 

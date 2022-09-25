@@ -82,7 +82,7 @@ class MasterWindow(object):
         menu = Menu(master)
 
         # ファイルリスト
-
+        # execで書き換える
         file_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../UserFile/*.py"))
         for path in glob.glob(file_path):
             if os.path.basename(path) == os.path.basename(__file__):

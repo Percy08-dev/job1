@@ -12,13 +12,20 @@ def main():
     kame = [(10, 10), (90, 90)]
 
     options = {
+        # 範囲設定
+        "x_lim" : 100, 
+        "y_lim" : 100, 
+
+        # grid分割数
+        "sep" : 10, 
+        
         # 移動アルゴリズム
         "Feeds_algo" : Move.RandomWalk, 
         "Turtle_algo" : Move.HaveNose, 
 
         # 距離関係
         "DistanceFunction" : "Euclidean",
-        "sight" : 5, 
+        "sight" : 30, 
         
         # 亀の移動速度
         "Speed" : 0,        # 0 -> 10 -> 9 -> 8 -> ... -> 2 -> 1 の順に遅くなる. 正直余り変わらない. 移動距離を伸ばすと意味が出そう

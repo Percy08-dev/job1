@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>readme.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E8%AA%AC%E6%98%8E%E6%9B%B8">説明書</h1>
+<h2 id="%E5%AE%9F%E8%A1%8C%E6%96%B9%E6%B3%95">実行方法</h2>
+<!--
+- exeファイルの場合
+    
+    ダブルクリックで実行できます. 
+    ただし, srcディレクトリに属するファイルに対する変更は適用されません. 
+    
+    -> ファイルを動的に追加できる性質上exe化できない. 
+    -> execを使えば行けるか？
+-->
+<ul>
+<li>
+<p>Pythonインタープリタから実行する場合</p>
+<p>付属の.batファイルを実行することで実行できます.
+自身の環境に, Pythonをインストールする必要があります.
+Python 3.8.10 で作成した為, 同様のPython を使用する事を推奨します.
+下記のサイトにPythonの環境構築方法が記されています.<br>
+https://www.python.jp/install/windows/install.html</p>
+<p>コマンドプロンプトやPowerShellの様なコマンドラインから実行する場合は,
+cdを用いてsrcディレクトリを移動した後, 下記のコマンドを実行する事で実行可能です. &quot;ファイル名&quot;の部分を実際のファイル名</p>
+<pre class="hljs"><code><div>Python MasterWindow.py
+</div></code></pre>
+</li>
+</ul>
+<h2 id="%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90">ディレクトリ構成</h2>
+<pre class="hljs"><code><div>.
+├── Run.bat                 -&gt; 実行補助のbatファイル. ※1
+├── UserFile                -&gt; 自身で作成したファイルを置くディレクトリ
+│   ├── __pycache__         -&gt; ※2
+│   │   ├── sample1.cpython-38.pyc
+│   │   ├── sample2.cpython-38.pyc
+│   │   ├── sample3.cpython-38.pyc
+│   │   ├── sample4.cpython-38.pyc
+│   │   └── sample5.cpython-38.pyc
+│   ├── sample1.py          -&gt; サンプルファイル
+│   ├── sample2.py
+│   ├── sample3.py
+│   ├── sample4.py
+│   └── sample5.py
+├── readme.html     -&gt; 説明書 pdf と内容は同じです.
+├── readme.md
+├── readme.pdf      -&gt; 説明書 htmlと内容は同じです. 
+└── src                     -&gt; 今回作成したソースコードが置かれたディレクトリ
+    ├── MasterWindow.py     -&gt; メインプログラム  
+    └── lib                 -&gt; サブプログラムの置かれたディレクトリ
+        ├── __pycache__     -&gt; -&gt; ※2
+        │   ├── move.cpython-38.pyc
+        │   ├── normalize_path.cpython-38.pyc
+        │   └── object.cpython-38.pyc
+        ├── move.py         -&gt; 亀や餌の動き方について記述されたファイル
+        ├── normalize_path.py
+        └── object.py       -&gt; -&gt; 画面, 亀, 餌に関するファイル
+</div></code></pre>
+<p>※1 ディレクトリを移動すると動きません. 移動したい場合は, ショートカットを作成してください.<br>
+※2 Pythonが実行時に作成したファイル群. 各種ファイルのコンパイルされたものが格納されている.</p>
+<h2 id="%E8%A8%98%E8%BF%B0%E6%96%B9%E6%B3%95">記述方法</h2>
+<p>まず, 関連ファイルのimportを行います.
+下記の6行は必ず先頭に記述してください.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> os
+tmppath = os.path.normpath(os.path.join(os.path.dirname(__file__), <span class="hljs-string">"../src/lib"</span>))   
+sys.path.append(tmppath)
+<span class="hljs-keyword">from</span> lib.object <span class="hljs-keyword">import</span> Feald, INF
+<span class="hljs-keyword">from</span> lib.move <span class="hljs-keyword">import</span> Move
+</div></code></pre>
+<p>次にmain関数を記述します.
+作成したファイルはmain関数が実行されます.
+その為, main関数は必ず記述する必要があります.
+main関数には, 以下の要素を記述する必要があります.</p>
+<ul>
+<li>餌の座標のリスト
+<ul>
+<li>座標は(x, y)の2次元です.</li>
+</ul>
+</li>
+<li>亀の座標のリスト
+<ul>
+<li>餌と同様です.</li>
+</ul>
+</li>
+<li>オプション
+<ul>
+<li>餌のアルゴリズムの指定 -&gt; Feeds_algo</li>
+<li>亀のアルゴリズムの指定 -&gt; Turtle_algo</li>
+<li>距離関数の指定 -&gt; DistanceFunction(str)</li>
+<li>射程の指定 -&gt; sight</li>
+<li>移動速度の指定 -&gt; Speed</li>
+<li>遅延時間の指定 -&gt; Delay</li>
+<li>Gridの有無の指定 -&gt; Grid</li>
+<li>最大行動回数の指定 -&gt; max-loop</li>
+</ul>
+</li>
+<li>Fealdオブジェクトの作成
+<ul>
+<li>以下の引数を渡す必要があります.</li>
+</ul>
+<ul>
+<li>feeds -&gt; 餌の座標のリスト</li>
+<li>turtles -&gt; 亀の座標のリスト</li>
+<li>options -&gt; オプション</li>
+</ul>
+</li>
+<li>Startメソッドの実行</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    feed = [(<span class="hljs-number">50</span>, <span class="hljs-number">50</span>)]
+    kame = [(<span class="hljs-number">10</span>, <span class="hljs-number">10</span>), (<span class="hljs-number">90</span>, <span class="hljs-number">90</span>)]
+
+    options = {
+        <span class="hljs-comment"># 移動アルゴリズム</span>
+        <span class="hljs-string">"Feeds_algo"</span> : Move.RandomWalk, 
+        <span class="hljs-string">"Turtle_algo"</span> : Move.HaveNose, 
+
+        <span class="hljs-comment"># 距離関係</span>
+        <span class="hljs-string">"DistanceFunction"</span> : <span class="hljs-string">"Euclidean"</span>,
+        <span class="hljs-string">"sight"</span> : <span class="hljs-number">5</span>, 
+        
+        <span class="hljs-comment"># 亀の移動速度</span>
+        <span class="hljs-string">"Speed"</span> : <span class="hljs-number">0</span>,        
+        <span class="hljs-string">"Delay"</span> : <span class="hljs-number">0</span>,        <span class="hljs-comment"># 1 (s) = 1000 (ms)</span>
+
+        <span class="hljs-comment"># グリッドの描写</span>
+        <span class="hljs-string">"Grid"</span> : <span class="hljs-literal">True</span>, 
+
+        <span class="hljs-comment"># 行動回数</span>
+        <span class="hljs-string">"max-loop"</span> : INF,      <span class="hljs-comment"># 整数 or INF</span>
+    }
+    
+    x = Feald(feeds=feed, turtles=kame, options=options)
+    x.start()
+
+</div></code></pre>
+<h2 id="%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%A7%A3%E8%AA%AC">ソースコードの解説</h2>
+<h3 id="masterwindowpy">MasterWindow.py</h3>
+<p>メインプログラムです.</p>
+<h3 id="libobjectpy">/lib/object.py</h3>
+<ul>
+<li>Class Law -&gt; 空間の広さを規定するクラスです.
+<ul>
+<li>クラス変数
+<ul>
+<li>x_lim -&gt; xの範囲を指定します.</li>
+<li>y_lim -&gt; yの範囲を指定します.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li>Class Feald -&gt; 描写範囲とその内部を規定するクラスです. Lawを継承しています.
+<ul>
+<li>
+<p>クラス変数</p>
+<ul>
+<li>mode -&gt; 未使用</li>
+<li>turn -&gt; 現在のターン数を記録</li>
+</ul>
+</li>
+<li>
+<p>インスタンス変数</p>
+<ul>
+<li>Feeds -&gt; 餌のオブジェクトを格納したリスト</li>
+<li>Turtles -&gt; 亀のオブジェクトを格納したリスト</li>
+<li>FeedsAlgo -&gt; 餌の移動に用いる関数の参照</li>
+<li>TurtleAlgo -&gt; 亀の移動に用いる関数の参照</li>
+<li>delay -&gt; 1ターンごとの遅延時間を記録. (ms)</li>
+<li>Options -&gt; 入力したOptionへの参照</li>
+</ul>
+</li>
+<li>
+<p>メソッド　※先頭に__がついているメソッドは内部に秘匿されている為, 外部からアクセス出来ません.</p>
+<ul>
+<li>
+<p>__init__ -&gt; Fealdクラスのコンストラクタを呼びます. Fealdを作成した際に最初に必ず実行されるメソッドです.</p>
+<ul>
+<li>
+<p>入力：<br>
+feeds -&gt; 餌の座標を格納したリスト<br>
+turtles -&gt; 亀の座標を格納したリスト<br>
+options -&gt; 移動の関数や遅延時間などを格納した辞書</p>
+</li>
+<li>
+<p>出力：なし</p>
+</li>
+</ul>
+</li>
+<li>
+<p>__wall -&gt; 壁を描写するメソッドです.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>__grid -&gt; Gridを描写します. x, y共に100分割します.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>init_colors -&gt; 亀に使用する色のリストを初期化します.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>start -&gt; 指定ターン数若しくは餌が無くなるまで実行します.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>play -&gt; 1ターンの処理を行います.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>eat_check -&gt; 餌と亀が重なった際の判定と処理を行います.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>end_check -&gt; 餌が残っているかをboolで返します. 終了判定に用います.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：bool</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li>Class Feed -&gt; 餌のクラス. Lawを継承しています.
+<ul>
+<li>インスタンス変数</li>
+<li>メソッド
+<ul>
+<li>
+<p>__init__ -&gt; Feedクラスのコンストラクタを呼びます. 座標が範囲内に収まっているか等の確認を行います.</p>
+<ul>
+<li>入力：<br>
+x -&gt; int<br>
+y -&gt; int<br>
+op -&gt;  移動の関数や遅延時間などを格納した辞書.</li>
+</ul>
+</li>
+<li>
+<p>draw_border -&gt; 境界線を描写するメソッド.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>run -&gt; 移動を行います.</p>
+<ul>
+<li>入力：<br>
+algo -&gt; Moveクラスのメソッドの参照.<br>
+options -&gt;  移動の関数や遅延時間などを格納した辞書.</li>
+<li>出力：なし</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li>Class Turtle -&gt; 亀のクラス. Lawを継承しています.
+<ul>
+<li>メソッド
+<ul>
+<li>
+<p>__init__ -&gt; Turtleクラスのコンストラクタを呼びます. Feed同様に座標が範囲内に収まっているかを確認します.</p>
+<ul>
+<li>入力：<br>
+x -&gt; int<br>
+y -&gt; int<br>
+op -&gt;  移動の関数や遅延時間などを格納した辞書.</li>
+<li>出力：なし</li>
+</ul>
+</li>
+<li>
+<p>_individual_colors -&gt; 亀に個々に別々の色を割り振ります. 規定の配色が無くなった場合は, ランダムに色が設定されます.</p>
+<ul>
+<li>入力：なし</li>
+<li>出力：str or (float, float, float) -&gt; 色の文字列 or RGB</li>
+</ul>
+</li>
+<li>
+<p>run -&gt; 移動を行います.</p>
+<ul>
+<li>入力：<br>
+algo -&gt; Moveクラスのメソッドの参照
+option -&gt; 移動の関数や遅延時間などを格納した辞書.</li>
+<li>出力：なし</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="libmovepy">/lib/move.py</h3>
+<ul>
+<li>
+<p>Class Move -&gt; 移動に関するアルゴリズムを管理するクラスです.<br>
+外部からアクセス可能なメソッドの入出力は全て共通です.<br>
+入力：
+T -&gt; turtleオブジェクト
+option -&gt; 移動の関数や遅延時間などを格納した辞書.<br>
+出力：int (0～3)</p>
+<ul>
+<li>
+<p>stay -&gt; 移動しない</p>
+</li>
+<li>
+<p>RandomWalk -&gt; ランダムに行動します.</p>
+</li>
+<li>
+<p>HaveNose -&gt; 一方が匂いを放ち, 一方がそれを検知する鼻を持っている想定の関数です. 餌が匂いを放ち, 亀が検知する事を想定しています.</p>
+</li>
+<li>
+<p>_euclidean -&gt; 2点間のユークリッド距離を計算します.</p>
+<ul>
+<li>入力：p1 -&gt; (x:int, y:int), p2 -&gt; (x:int, y:int)</li>
+<li>出力：float</li>
+</ul>
+</li>
+<li>
+<p>_manhattan -&gt; 2点間のマンハッタン距離を計算します.</p>
+<ul>
+<li>入力：p1 -&gt; (x:int, y:int), p2 -&gt; (x:int, y:int)</li>
+<li>出力：float</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>

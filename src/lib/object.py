@@ -32,9 +32,6 @@ SPEED = "Speed"
 DELAY = "Delay"
 GRID = "Grid"
 
-
-
-
 # 色
 colors = [
     "cadetblue", 
@@ -53,14 +50,13 @@ colors = [
 法則
 """
 class Law:
-    # 空間の範囲
-    x_lim = (0, 1_00)          # 大きな値を設定した場合, gridで塗りつぶされる & 細かい動きが見えなくなる. 
-    y_lim = (0, 1_00)
-
-    # マージン, 餌と亀を設置できる範囲を壁からの距離で設定, 行動回数 < マージンとすることで実質無限の空間. 
-    # とりあえず未使用
-    margin = 0
-
+    def __init__(self, x, y) -> None:
+        if x < 0 or y < 0:
+            print("ERROR: invalid range", file=sys.stderr)
+            sys.exit(1)
+        # 空間の範囲
+        self.x_lim = (0, x)          # 大きな値を設定した場合, gridで塗りつぶされる & 細かい動きが見えなくなる. 
+        self.y_lim = (0, y)
 
 
 """
@@ -88,10 +84,17 @@ class Feald(Law):
 
 
     def __init__(self, feeds:List[tuple], turtles:List[tuple], options) -> None:
+        super().__init__(options["x_lim"], options["y_lim"])       # スーパークラス
+        
         self.scr = turtle.Screen()
-        x_mg = (Law.x_lim[1] - Law.x_lim[0]) // 10
-        y_mg = (Law.y_lim[1] - Law.y_lim[0]) // 10
-        turtle.setworldcoordinates(Law.x_lim[0]-x_mg, Law.y_lim[1]+y_mg, Law.x_lim[1]+x_mg, Law.y_lim[0]-y_mg)      # 画面のサイズを指定
+        x_mg = (self.x_lim[1] - self.x_lim[0]) // 10
+        y_mg = (self.y_lim[1] - self.y_lim[0]) // 10
+        turtle.setworldcoordinates(self.x_lim[0]-x_mg, self.y_lim[1]+y_mg, self.x_lim[1]+x_mg, self.y_lim[0]-y_mg)      # 画面のサイズを指定
+
+        self.FeedsAlgo = options[FEEDS_ALGO]                 # 餌のアルゴリズム
+        self.TurtlesAlgo = options[TURTLE_ALGO]              # 亀のアルゴリズム
+        self.delay = options[DELAY] / 1000
+        self.Options = options
 
         self.__wall()                               # 壁の描写
         if options[GRID]:                           # grid
@@ -100,11 +103,7 @@ class Feald(Law):
         self.init_colors()
         
         self.Feeds = [Feed(x, y, options) for (x, y) in feeds]                   # 指定座標に餌を配置
-        self.Turtles = [Turtle(x, y, options[SPEED]) for (x, y) in turtles]             # 指定座標に亀を配置
-        self.FeedsAlgo = options[FEEDS_ALGO]                 # 餌のアルゴリズム
-        self.TurtlesAlgo = options[TURTLE_ALGO]              # 亀のアルゴリズム
-        self.delay = options[DELAY] / 1000
-        self.Options = options
+        self.Turtles = [Turtle(x, y, options) for (x, y) in turtles]             # 指定座標に亀を配置
 
         
         # turtle.delay(delay)                         # 遅延をms単位で指定 -> tracerをオフにすることで無効
@@ -129,6 +128,12 @@ class Feald(Law):
 
     def __grid(self):
         color = (0.8, 0.8, 0.8)     # RGB
+        if self.Options["x_lim"] % self.Options["sep"] != 0 or self.Options["y_lim"] %  self.Options["sep"] != 0:
+            print("WARNING! : x or y can't div by sep.", file=sys.stderr)
+
+        x_stride = self.Options["x_lim"] / self.Options["sep"]           # 描写幅 
+        y_stride = self.Options["y_lim"] / self.Options["sep"]          
+
         V = turtle.Turtle()         # 垂直方向
         H = turtle.Turtle()         # 水平方向
 
@@ -146,20 +151,20 @@ class Feald(Law):
         V.setpos(self.x_lim[0], self.y_lim[0])      # 左上へ移動
         H.setpos(self.x_lim[0], self.y_lim[0])
 
-        while V.xcor() + 1 < Law.x_lim[1] or H.ycor() + 1 < Law.y_lim[1]:
-            if V.xcor() + 1 < Law.x_lim[1]:         # 垂直方向の描写
-                V.setx(V.xcor() + 1)           # 右へ1マス移動
+        while V.xcor() + x_stride < self.x_lim[1] or H.ycor() + y_stride < self.y_lim[1]:
+            if V.xcor() + x_stride < self.x_lim[1]:         # 垂直方向の描写
+                V.setx(V.xcor() + x_stride)           # 右へ1マス移動
                 V.pendown()
-                V.sety(Law.y_lim[1])            # 下向きに線を引いて上へ戻す
+                V.sety(self.y_lim[1])            # 下向きに線を引いて上へ戻す
                 V.penup()
-                V.sety(Law.y_lim[0])
+                V.sety(self.y_lim[0])
 
-            if H.ycor() + 1 < Law.y_lim[1]:         # 水平方向の描写
-                H.sety(H.ycor() + 1)
+            if H.ycor() + y_stride < self.y_lim[1]:         # 水平方向の描写
+                H.sety(H.ycor() + y_stride)
                 H.pendown()
-                H.setx(Law.x_lim[1])
+                H.setx(self.x_lim[1])
                 H.penup()
-                H.setx(Law.x_lim[0])
+                H.setx(self.x_lim[0])
 
         V.penup()
         H.penup()
@@ -229,13 +234,15 @@ class Feald(Law):
 """
 class Feed(Law):             
     def __init__(self, x:int, y:int, op:dict) -> None:
-        if Law.x_lim[0] + Law.margin <= x <= Law.x_lim[1] - Law.margin:       # 餌がFeald内に収まっているかの確認
+        super().__init__(op["x_lim"], op["y_lim"])
+
+        if self.x_lim[0] <= x <= self.x_lim[1] :       # 餌がFeald内に収まっているかの確認
             pass
         else:
             print("ERROR: invalid x position", file=sys.stderr)
             sys.exit(1)
 
-        if Law.y_lim[0] + Law.margin <= y <= Law.y_lim[1] - Law.margin:
+        if self.y_lim[0] <= y <= self.y_lim[1]:
             pass
         else:
             print("ERROR: invalid y position", file=sys.stderr)
@@ -270,24 +277,6 @@ class Feed(Law):
             print("Undefined distance function", file=sys.stderr)
             sys.exit()
 
-        """
-        if op["Turtle_algo"].__name__ == "HaveNose":
-            tmp = turtle.Turtle()
-            tmp.color("Red")
-            tmp.hideturtle()
-            tmp.penup()
-            tmp.setpos(x, y-op["sight"])
-            tmp.pendown()
-            if op["DistanceFunction"] == "Euclidean":
-                tmp.circle(radius=op["sight"])
-            elif op["DistanceFunction"] == "Manhattan":
-                tmp.circle(radius=op["sight"], steps=4)
-            else:
-                print("Undefined distance function", file=sys.stderr)
-                sys.exit()
-            
-            tmp.penup()
-        """
 
 
     def draw_border(self):
@@ -318,9 +307,9 @@ class Feed(Law):
         while not flag:                                             # 壁のない方向が出るまで繰り返す
             direction = algo(T=self.Feed, option=option)               
             if x[direction][0]:
-                flag = Law.x_lim[0] <= self.Feed.xcor() + x[direction][1] <= Law.x_lim[1]
+                flag = self.x_lim[0] <= self.Feed.xcor() + x[direction][1] <= self.x_lim[1]
             else:
-                flag = Law.y_lim[0] <= self.Feed.ycor() + x[direction][1] <= Law.y_lim[1]
+                flag = self.y_lim[0] <= self.Feed.ycor() + x[direction][1] <= self.y_lim[1]
 
 
         # self.T.setheading(direction * 90)   # 頭の方向を決めて前進 -> 誤差の原因
@@ -337,14 +326,15 @@ class Feed(Law):
 亀クラス
 """
 class Turtle(Law):
-    def __init__(self, x:int, y:int, speed:int) -> None:
-        if Law.x_lim[0] + Law.margin <= x <= Law.x_lim[1] - Law.margin:       # 餌がFeald内に収まっているかの確認
+    def __init__(self, x:int, y:int, op) -> None:
+        super().__init__(op["x_lim"], op["y_lim"])
+        if self.x_lim[0] <= x <= self.x_lim[1]:       # 餌がFeald内に収まっているかの確認
             pass
         else:
             print("ERROR: invalid x position", file=sys.stderr)
             sys.exit(1)
 
-        if Law.y_lim[0] + Law.margin <= y <= Law.y_lim[1] - Law.margin:
+        if self.y_lim[0] <= y <= self.y_lim[1]:
             pass
         else:
             print("ERROR: invalid y position", file=sys.stderr)
@@ -352,7 +342,7 @@ class Turtle(Law):
 
         # config
         self.T = turtle.Turtle()
-        self.T.speed(speed=speed)
+        self.T.speed(speed=op[SPEED])
         self.T.color(self._individual_colors())
         self.T.shape("turtle")
         self.T.width(2)
@@ -382,9 +372,9 @@ class Turtle(Law):
         while not flag:                                             # 壁のない方向が出るまで繰り返す
             direction = algo(T=self.T, option=option)               
             if x[direction][0]:
-                flag = Law.x_lim[0] <= self.T.xcor() + x[direction][1] <= Law.x_lim[1]
+                flag = self.x_lim[0] <= self.T.xcor() + x[direction][1] <= self.x_lim[1]
             else:
-                flag = Law.y_lim[0] <= self.T.ycor() + x[direction][1] <= Law.y_lim[1]
+                flag = self.y_lim[0] <= self.T.ycor() + x[direction][1] <= self.y_lim[1]
 
 
         # self.T.setheading(direction * 90)   # 頭の方向を決めて前進 -> 誤差の原因

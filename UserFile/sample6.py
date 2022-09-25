@@ -8,8 +8,8 @@ from lib.move import Move
 
 
 def main():
-    feed = [(50, 50)]
-    kame = [(10, 10), (90, 90), (0, 10), (60 ,60)]
+    feed = [(5, 5)]
+    kame = [(10, 10)]
 
     options = {
         # 範囲設定
@@ -20,20 +20,19 @@ def main():
         "sep" : 10, 
         
         # 移動アルゴリズム
-        "Feeds_algo" : Move.stay, 
+        "Feeds_algo" : Move.RandomWalk, 
         "Turtle_algo" : Move.HaveNose, 
 
         # 距離関係
-        "DistanceFunction" : "Manhattan",          # Euclidean or Manhattan
-        # "DistanceFunction" : "Euclidean",
-        "sight" : 10, 
+        "DistanceFunction" : "Euclidean",
+        "sight" : 1, 
         
         # 亀の移動速度
         "Speed" : 0,        # 0 -> 10 -> 9 -> 8 -> ... -> 2 -> 1 の順に遅くなる. 正直余り変わらない. 移動距離を伸ばすと意味が出そう
-        "Delay" : 0,        # 1ターンごとの遅延時間. (ms), 1 (s) = 1000 (ms)
+        "Delay" : 200,        # 1ターンごとの遅延時間. (ms), 1 (s) = 1000 (ms)
 
         # グリッドの描写
-        "Grid" : True, 
+        "Grid" : False, 
 
         # 行動回数
         "max-loop" : INF,      # 整数 or INF
@@ -41,7 +40,6 @@ def main():
     
     x = Feald(feeds=feed, turtles=kame, options=options)
     x.start()
-
 
 
 if __name__ == "__main__":
