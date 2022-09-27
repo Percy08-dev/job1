@@ -9,7 +9,7 @@ from lib.move import Move
 
 def main():
     feed = [(50, 50)]
-    kame = [(10, 10), (90, 90)]
+    kame = [(100, 100), (90, 90)]
 
     options = {
         # 範囲設定

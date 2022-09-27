@@ -9,35 +9,35 @@ from lib.move import Move
 def main():
     # feed = [(50, 50)]
     # kame = [(10, 10), (90, 90), (0, 10), (60 ,60)]
-    feed = {}
-    kame = {}
+    feed = [(1, 1)]
+    kame = [(2, 2)]
 
-    options = {{
+    options = {
         # 範囲設定
-        "x_lim" : {}, 
-        "y_lim" : {}, 
+        "x_lim" : 100, 
+        "y_lim" : 100, 
 
         # grid分割数
-        "sep" : {}, 
+        "sep" : 10, 
 
         # 移動アルゴリズム
-        "Feeds_algo" : {}, 
-        "Turtle_algo" : {}, 
+        "Feeds_algo" : Move.RandomWalk, 
+        "Turtle_algo" : Move.stay, 
 
         # 距離関係
-        "DistanceFunction" : "{}",          # Euclidean or Manhattan
-        "sight" : {}, 
+        "DistanceFunction" : "Euclidean",          # Euclidean or Manhattan
+        "sight" : 0, 
         
         # 亀の移動速度
-        "Speed" : {},        # 0 -> 10 -> 9 -> 8 -> ... -> 2 -> 1 の順に遅くなる. 正直余り変わらない. 移動距離を伸ばすと意味が出そう
-        "Delay" : {},        # 1ターンごとの遅延時間. (ms), 1 (s) = 1000 (ms)
+        "Speed" : 0,        # 0 -> 10 -> 9 -> 8 -> ... -> 2 -> 1 の順に遅くなる. 正直余り変わらない. 移動距離を伸ばすと意味が出そう
+        "Delay" : 0,        # 1ターンごとの遅延時間. (ms), 1 (s) = 1000 (ms)
 
         # グリッドの描写
-        "Grid" : {}, 
+        "Grid" : True, 
 
         # 行動回数
-        "max-loop" : {},      # 整数 or INF
-    }}
+        "max-loop" : 110,      # 整数 or INF
+    }
     
     x = Feald(feeds=feed, turtles=kame, options=options)
     x.start()
