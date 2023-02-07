@@ -28,7 +28,6 @@ txtfont = ['Lucida Console', 10, 'normal']
 
 
 class MasterWindow(object):
-    
     def __init__(self):
         self.main_window = main_window =  Tk()                      # 主windowの生成
         main_window.title = "Simulator"                             # タイトル  
